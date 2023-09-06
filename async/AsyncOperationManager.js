@@ -22,6 +22,31 @@ class AsyncOperationManager {
         })
     }
 
+
+    scheduleSetTimeoutWithNextTick(delayTimeMs) {
+        setTimeout(() => {
+            process.nextTick(() => {
+                console.log("They say that time's supposed to heal yas");
+            });
+            console.log("Everything");
+            /*
+            It's a microtask. the event loop processes the micro-task queue entirely,
+            after processing one macro-task from the macro-task queue.
+            All callbacks passed to process.nextTick() will be resolved before the event loop continues
+            (In short, on the current phase). So, it will be executed first.
+            */
+        }, delayTimeMs);
+    }
+
+    scheduleSetImmediateWithNextTick() {
+        setImmediate(() => {
+            process.nextTick(() => {
+                console.log("Hello, can you hear me?");
+            });
+            console.log("But I ain't done much healing");
+        });
+    }
+
 }
 
 export default AsyncOperationManager;

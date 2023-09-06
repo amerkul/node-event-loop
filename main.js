@@ -3,14 +3,12 @@ import AsyncOperationManager from "./async/AsyncOperationManager.js";
 function combineTasks() {
     const asyncManager = new AsyncOperationManager();
     /*
-    It will be executed last.
+    It will be executed before last.
     */
     asyncManager.simulateAsyncOperation(0);
+
     /*
-    It's a microtask. the event loop processes the micro-task queue entirely,
-    after processing one macro-task from the macro-task queue.
-    All callbacks passed to process.nextTick() will be resolved before the event loop continues
-    (In short, on the current phase). So, it will be executed first.
+    It will be first.
      */
     process.nextTick(() => {
         console.log("I was wondering if after all these years");
@@ -19,6 +17,15 @@ function combineTasks() {
     It will be executed second.
      */
     asyncManager.scheduleImmediate();
+
+    /*
+    last
+     */
+    asyncManager.scheduleSetTimeoutWithNextTick(10);
+    /*
+    third
+     */
+    asyncManager.scheduleSetImmediateWithNextTick();
 }
 
 function bonus() {
@@ -47,6 +54,6 @@ function bonus() {
 }
 
 combineTasks();
-bonus();
+// bonus();
 
 
